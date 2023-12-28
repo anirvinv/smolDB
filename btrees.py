@@ -1,4 +1,5 @@
 from collections import deque
+import random
 
 
 class BNode:
@@ -38,11 +39,11 @@ class BTree:
             if node.leaf:
                 node.insert_key(key)
                 return
-
             idx, child = -1, None
             for index, k in enumerate(node.keys):
                 if key < k:
                     idx = index
+                    break
             if idx == -1:
                 idx = len(node.keys)
             child = node.children[idx]
@@ -100,7 +101,7 @@ class BTree:
                 node = q[-1]
                 q.pop()
                 if with_children:
-                    print(f"{node.keys}: {node.children}", end="  |  ")
+                    print(f"{node.keys}:{node.children}", end="  ")
                 else:
                     print(f"{node.keys}", end=" ")
                 for child in node.children:
@@ -110,10 +111,14 @@ class BTree:
 
 if __name__ == "__main__":
     tree = BTree(2)
-    for i in range(10):
-        print(f"inserting: {i}")
-        tree.insert(i)
+    nums = [x for x in range(23)]
+    random.shuffle(nums)
+
+    # nums = [20, 14, 5, 9, 21, 3, 2, 10]
+    for num in nums:
+        print(f"inserting: {num}")
+        tree.insert(num)
         tree.print_tree()
-        print("-----------")
-        tree.print_tree(with_children=True)
+        # print("-----------")
+        # tree.print_tree(with_children=True)
         print()
