@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "engine/engine.c"
 #include "parser/parser.c"
@@ -9,9 +10,18 @@
 int main() {
     printf("Welcome to smoldb\n");
 
+    char* fname = "btree.dat";
+
+    FILE* fptr;
+    if (access("btree.dat", F_OK) == 0) {
+        fptr = fopen(fname, "r+b");
+    } else {
+        fptr = fopen(fname, "w+b");
+    }
+
     char* buff = malloc(1);
     size_t len = 1;
-    FILE* fptr = fopen("btree.dat", "wr+");
+
     while (true) {
         printf("> ");
         getline(&buff, &len, stdin);

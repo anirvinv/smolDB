@@ -27,6 +27,8 @@ typedef struct BNodeHeader {
     uint16_t free_start;
     uint16_t free_end;
 
+    uint16_t left_child_id;
+
 } BNodeHeader;
 
 typedef struct BNode {

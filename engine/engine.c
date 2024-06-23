@@ -4,6 +4,7 @@
 #include "engine.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "../parser/parse_structures.h"
@@ -48,6 +49,7 @@ int insert(char* key, char* value, FILE* fptr) {
     // write root to file
     fseek(fptr, 0, SEEK_SET);
     fwrite(root, sizeof(BNode), 1, fptr);
+    fflush(fptr);
     free(root);
     return 0;
 }
@@ -104,11 +106,10 @@ BNode* create_leaf_node(uint16_t id, uint16_t parent_id) {
 
 BNode* read_node(FILE* fptr, page_number_t id) {
     fseek(fptr, id * PAGE_SIZE, SEEK_SET);
-    BNode* node = malloc(sizeof(BNode));
+    BNode* node = calloc(1, sizeof(BNode));
     fread(node, sizeof(BNode), 1, fptr);
 
-    // if the file pointer is at the end of the file, the node does not exist
-    if (feof(fptr)) {
+    if (node->header.valid == 0) {
         free(node);
         return NULL;
     }
