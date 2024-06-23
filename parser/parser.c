@@ -1,17 +1,10 @@
 #ifndef PARSER
 #define PARSER
 
+#include "parser.h"
+
 #include <stdio.h>
 #include <string.h>
-
-typedef struct {
-    char** tokens;
-    int len;
-} ParserResult;
-
-int count_tokens(char* buffer, int len);
-int parse_input(char* buffer, int len, ParserResult* buff);
-int free_parsed_result(ParserResult* parsed_res_ptr);
 
 int count_tokens(char* buffer, int len) {
     int num_tokens = 0;
@@ -29,8 +22,11 @@ int parse_input(char* buffer, int len, ParserResult* pr) {
     int num_tokens = count_tokens(buffer, len);
     pr->len = num_tokens;
     if (num_tokens == 0) return 1;
-    printf("num_tokens: %d\n", num_tokens);
+    // printf("num_tokens: %d\n", num_tokens);
     pr->tokens = (char**)malloc(num_tokens * sizeof(char*));
+
+    // the last character has a newline, so we need to remove it
+    buffer[len - 1] = '\0';
 
     char* rest = buffer;
     for (int i = 0; i < num_tokens; i++) {

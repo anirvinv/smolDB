@@ -110,7 +110,7 @@ class BTree:
 
 
 if __name__ == "__main__":
-    tree = BTree(2)
+    tree = BTree(3)
     nums = [x for x in range(23)]
     random.shuffle(nums)
 
